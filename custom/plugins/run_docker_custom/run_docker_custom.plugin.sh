@@ -41,22 +41,43 @@ docker_containers() {
 
 complete -F _get_docker_images run_docker_image
 run_docker_image() {
-    # Get the current directory
-    local current_dir
-    current_dir=$(pwd)
-    # Make sure there is an executable file in the current directory called run_docker_image
-    if [ -f "$current_dir/run_docker_image" ]; then
-        # Run the script
-        "./run_docker_image" "$@"
-    else
-        echo "No run_docker_image script found in the current directory"
-        echo "Attempting to run the executable 'run_docker_image' at the path: ~/Documents/docker/run_docker_image"$'\n'
-        if [ -f ~/Documents/git/run_docker_image/run_docker_image ]; then
-            ~/Documents/git/run_docker_image/run_docker_image "$@"
-        else
-            echo "No run_docker_image script found at the path: ~/Documents/git/run_docker_image/run_docker_image"
+    # Relies in the correct git repo to be installed at the below run_script_path
+    # Git repo: https://js-er-code.jsc.nasa.gov/aalbrigh/run_docker_image
+
+    # Some useful local variables
+    local run_script_dir
+    run_script_dir=~/Documents/git/run_docker_image
+    local run_script_name
+    run_script_name=run_docker_image
+
+    # Check the git repository
+    if [ -d "$run_script_dir" ]; then
+        cd "$run_script_dir" || return 1
+        # Assert the directory is on the main branch
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+        if [ "$current_branch" != "main" ]; then
+            echo "Error: The repository: $run_script_dir, is not on the 'main' branch. Current branch is '$current_branch'."
+            echo "Change to the 'main' branch to run the script."
             return 1
         fi
+        # Assert the working tree is clean
+        if [ -n "$(git status --porcelain)" ]; then
+            echo "Error: The repository: $run_script_dir, has uncommitted changes..."
+            return 1
+        fi
+    else
+        echo "Error: Could not find the git repository at the path: $run_script_dir"
+        return 1
+    fi
+
+    # Assert the script exists at the path
+    if [ -f "$run_script_dir/$run_script_name" ]; then
+        echo "Running script: $run_script_dir/$run_script_name ..."
+        # Run the script
+        "$run_script_dir/$run_script_name" "$@"
+    else
+        echo "Error: Could not find the script at the path: $run_script_dir/$run_script_name"
+        return 1
     fi
 }
 
