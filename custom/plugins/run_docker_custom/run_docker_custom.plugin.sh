@@ -44,27 +44,19 @@ run_docker_image() {
     # Relies in the correct git repo to be installed at the below run_script_path
     # Git repo: https://js-er-code.jsc.nasa.gov/aalbrigh/run_docker_image
 
+    # Get the current working directory
+    local current_working_dir
+    current_working_dir=$(pwd)
+
     # Some useful local variables
     local run_script_dir
     run_script_dir=~/Documents/git/run_docker_image
     local run_script_name
     run_script_name=run_docker_image
 
-    # Check the git repository
+    # Check that the script directory exists
     if [ -d "$run_script_dir" ]; then
         cd "$run_script_dir" || return 1
-        # Assert the directory is on the main branch
-        current_branch=$(git rev-parse --abbrev-ref HEAD)
-        if [ "$current_branch" != "main" ]; then
-            echo "Error: The repository: $run_script_dir, is not on the 'main' branch. Current branch is '$current_branch'."
-            echo "Change to the 'main' branch to run the script."
-            return 1
-        fi
-        # Assert the working tree is clean
-        if [ -n "$(git status --porcelain)" ]; then
-            echo "Error: The repository: $run_script_dir, has uncommitted changes..."
-            return 1
-        fi
     else
         echo "Error: Could not find the git repository at the path: $run_script_dir"
         return 1
@@ -73,6 +65,8 @@ run_docker_image() {
     # Assert the script exists at the path
     if [ -f "$run_script_dir/$run_script_name" ]; then
         echo "Running script: $run_script_dir/$run_script_name ..."
+        # Make sure you are in the correct directory
+        cd "$current_working_dir" || return 1
         # Run the script
         "$run_script_dir/$run_script_name" "$@"
     else
