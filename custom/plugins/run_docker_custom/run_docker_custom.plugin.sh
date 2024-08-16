@@ -85,3 +85,46 @@ docker_exec_bash() {
     fi
     docker exec -it "$container_name" /bin/bash
 }
+
+# Enable Docker autocompletion
+if [ -f /etc/bash_completion.d/docker ]; then
+    . /etc/bash_completion.d/docker
+fi
+
+_get_docker_containers() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local containers
+    containers=$(docker ps --format '{{.Names}}' 2>/dev/null)
+    COMPREPLY=($(compgen -W "$containers" -- "$cur"))
+}
+
+_echo_docker_containers() {
+    local containers
+    containers=$(docker ps --format '{{.Names}}' 2>/dev/null)
+    echo "$containers"
+}
+
+_get_docker_images() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local images
+    local files
+    images=$(docker images --format '{{.Repository}}:{{.Tag}}' 2>/dev/null)
+    files=$(ls -1)
+    COMPREPLY=($(compgen -W "$images $files" -- "$cur"))
+}
+
+_echo_docker_images() {
+    local images
+    images=$(docker images --format '{{.Repository}}:{{.Tag}}' 2>/dev/null)
+    # Remove <none> images
+    images=$(echo "$images" | grep -v '<none>')
+    echo "$images"
+}
+
+docker_images() {
+    _echo_docker_images
+}
+
+docker_containers() {
+    _echo_docker_containers
+}
