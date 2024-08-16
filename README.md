@@ -187,6 +187,7 @@ You can create a new sh config file by copying the template that we have include
 cp ~/.oh-my-bash/templates/bashrc.osh-template ~/.bashrc
 ```
 
+> Alternatively, copy the the custom one you have: `cp ~/.oh-my-bash/custom/bashrc.aalbrigh ~/.bashrc`
 ##### 4. Reload your .bashrc
 
 ```shell
