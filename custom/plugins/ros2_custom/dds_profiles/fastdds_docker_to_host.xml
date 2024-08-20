@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Create a profile that explicitly turns off DDS shared memory comm.
+     Shared memory comm does not work in dockers unless /dev/shm is mapped
+     into the docker, and even then it is often problematic due to 
+     ownership permissions differing between the host and the docker users.
+     Turning off shared mem comm means that FastDDS will revert to 
+     network-style comm instead. This is generally safe, though it is not as
+     performant. -->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles" >
+    <transport_descriptors>
+        <transport_descriptor>
+            <transport_id>CustomUdpTransport</transport_id>
+            <type>UDPv4</type>
+        </transport_descriptor>
+    </transport_descriptors>
+
+    <participant profile_name="participant_profile" is_default_profile="true">
+        <rtps>
+            <userTransports>
+                <transport_id>CustomUdpTransport</transport_id>
+            </userTransports>
+
+            <useBuiltinTransports>false</useBuiltinTransports>
+        </rtps>
+    </participant>
+</profiles>
