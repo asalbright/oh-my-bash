@@ -26,10 +26,19 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 DDS_PROFILES_DIR=$THIS_SCRIPT_DIR/dds_profiles
 
 ################################ PICK ONE OF THE BELOW ################################
+# Use fastrtps as the DDS implementation
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
+# Use cyclonedds as the DDS implementation
+# export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+########################################################################################
+
+################################ PICK ONE OF THE BELOW ################################
 # Export the DDS_PROFILES_DIR
-# export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILES_DIR/fast_dds_localhost_only.xml"
+export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILES_DIR/fastdds_localhost_only.xml"
 # export FASTRTPS_DEFAULT_PROFILES_FILE="$DDS_PROFILES_DIR/fast_dds_docker_to_host.xml"
+
 # Export the Cyclone DDS profile
 # Make sure ROS_DISTRO is set
-export CYCLONEDDS_URI="$DDS_PROFILES_DIR/cyclone_${ROS_DISTRO}_localhost_only.xml"
+# export CYCLONEDDS_URI="$DDS_PROFILES_DIR/cyclone_${ROS_DISTRO}_localhost_only.xml"
 ########################################################################################
