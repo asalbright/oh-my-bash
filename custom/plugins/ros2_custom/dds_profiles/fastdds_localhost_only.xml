@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles" >
+    <!-- This profile is for use with a set of nodes running on a single host
+         and talking only to each other. It will also work with nodes running in
+         dockers on the host that are configured to share the host network -->
+
+    <!-- A transport_descriptor specifies a traffic path. By default, FastDDS
+         tries to figure out the right path to take. For localhost use, we want to
+         nail this down to prevent use of anything other than localhost -->
+    <transport_descriptors>
+        <transport_descriptor>
+            <!-- This name can be anything; it's just an identifier for this path -->
+            <transport_id>LocalhostUdpTransport</transport_id>    
+
+            <!-- The default traffic type is UDP, so it's the most important to specify. 
+                 We could also add a similar definition for TCP and for UDPv6/TCPv6. -->
+            <type>UDPv4</type>                                    
+                <!-- Specify the list of interfaces that should be available.  By default, all interfaces are fair game -->
+                <interfaceWhiteList>                              
+                    <address>127.0.0.1</address>
+                </interfaceWhiteList>
+        </transport_descriptor>
+    </transport_descriptors>
+
+    <participant profile_name="participant_profile" is_default_profile="true">
+        <rtps>
+            <userTransports>
+                <!-- Which path to use. This must match the transport_id picked earlier. -->
+                <transport_id>LocalhostUdpTransport</transport_id>
+
+                    <!-- Provide an empty list here to turn off multicast traffic -->
+                    <metatrafficUnicastLocatorList>
+                        <locator/>
+                    </metatrafficUnicastLocatorList>
+
+                    <!-- Specify that the only peer we allow is localhost -->
+                    <initialPeersList>
+                        <locator>
+                            <udpv4>
+                                <address>127.0.0.1</address>
+                            </udpv4>
+                        </locator>
+                    </initialPeersList>
+            </userTransports>
+
+            <!-- Disable use of built-in transports. This prevents fastdds from trying to use shared
+                 memory as a transport, which usually doesn't work with dockers -->
+            <useBuiltinTransports>false</useBuiltinTransports>
+        </rtps>
+    </participant>
+</profiles>
