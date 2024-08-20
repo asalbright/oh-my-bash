@@ -102,7 +102,6 @@ completions=(
 aliases=(
   general 
   docker 
-  ros_custom
   )
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
@@ -114,8 +113,8 @@ plugins=(
 bashmarks 
 chown_custom 
 run_docker_custom
-ros2_custom
 ros_custom
+ros2_custom
 )
 
 # Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
