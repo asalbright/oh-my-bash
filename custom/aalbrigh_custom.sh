@@ -9,6 +9,3 @@ export USER_GID=$(id -g $USER)
 # AFAICT this is the default for most (all?) prebuilt images
 export CONTAINER_USER_UID=1000
 export CONTAINER_USER_GID=1001
-
-# For ROS2
-export RCUTILS_COLORIZED_OUTPUT=1
