@@ -6,3 +6,6 @@ alias uvd='deactivate'
 
 alias uvs='uv sync'
 alias uvb='uv build'
+
+. "$HOME/.local/bin/env"
+eval "$(uv generate-shell-completion bash)"
