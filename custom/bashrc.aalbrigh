@@ -113,6 +113,7 @@ git
 bashmarks 
 uv_custom
 chown_custom 
+docker_custom
 run_docker_custom
 ros_custom
 ros2_custom
