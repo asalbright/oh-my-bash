@@ -49,11 +49,22 @@ docker_compose_copy_terminator() {
 # Autocomplete for copy_terminator
 complete -F _get_docker_compose_services docker_compose_copy_terminator
 
-# New function to run both setup commands
+docker_compose_copy_fonts() {
+    local home
+    home=$(_docker_compose_get_home_var "$1")
+
+    docker compose exec "$1" mkdir -p "${home}/.local/share/fonts"
+    docker compose cp ~/.local/share/fonts/. "$1":"${home}/.local/share/fonts"
+}
+
+complete -F _get_docker_compose_services docker_compose_copy_fonts
+
 docker_compose_copy_my_stuff() {
     docker_compose_copy_omb "$1"
     docker_compose_copy_terminator "$1"
+    docker_compose_copy_fonts "$1"
 }
+
 
 # Autocomplete for copy_my_stuff
 complete -F _get_docker_compose_services docker_compose_copy_my_stuff
