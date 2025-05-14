@@ -1,29 +1,20 @@
 # Add your own custom plugins in the custom/plugins directory. Plugins placed
 # here will override ones with the same name in the main plugins directory.
 
-# Check if uv is installed
-if ! command -v uv --version &> /dev/null
-then
-    echo "uv is not installed. Cannot really make use of the UV Custom Oh My Bash plugin ...\n"
-    
-    # Ask if the user wants to install uv
-    read -p "Do you want to install uv? (y/n) " -n 1 -r
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-    fi
+# If uv is not installed, echo message
+command -v uv >/dev/null 2>&1 || { echo >&2 "uv is not installed. Cannot really make use of the uv Custom Oh My Bash plugin ..."; }
 
-    # If not, remove uv_custom plugin from the .bashrc
-    sed -i '/uv_custom/d' "$HOME/.bashrc"
-    echo "Please re-source your .bashrc"
+alias activate='source .venv/bin/activate'
 
-    return
-fi
+alias uva='command uv add'
+alias uvad='command uv add --dev'
+alias uvrm='command uv remove'
 
-alias uva='source .venv/bin/activate'
-alias uvd='deactivate'
-
-alias uvs='uv sync'
-alias uvb='uv build'
+alias uvr='command uv run'
+alias uvi='command uv init'
+alias uvs='command uv sync'
+alias uvb='command uv build'
+alias uvp='command uv pip'
 
 # . "$HOME/.local/bin/env"
 eval "$(uv generate-shell-completion bash)"
