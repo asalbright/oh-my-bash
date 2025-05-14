@@ -112,7 +112,6 @@ aliases=(
 plugins=(
 git 
 bashmarks 
-uv_custom
 chown_custom 
 docker_custom
 run_docker_custom
