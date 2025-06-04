@@ -15,6 +15,37 @@ _docker_compose_get_home_var() {
     docker compose exec "$1" printenv HOME 2>/dev/null | tr -d '\r'
 }
 
+# Copy .bashrc into container
+_docker_compose_get_dir_from_var() {
+    # Get the directory from the variable
+    docker compose exec "$1" printenv "$2" 2>/dev/null | tr -d '\r'
+}
+
+# Copy .vscode into container
+docker_compose_copy_vscode() {
+    # Help message
+    if [ -z "$1" ]; then
+        echo "Usage: docker_compose_copy_vscode <compose service> <container variable OR path>"
+        echo "Example 1: docker_compose_copy_vscode dev ROS_WS"
+        echo "Example 2: docker_compose_copy_vscode dev /home/user/ros_ws"
+        return 1
+    fi
+
+    local dir
+    # If the second argument has "/"" in it assume it is the path, otherwise assume it is a variable
+
+    if [[ "$2" == */* ]]; then
+        dir="$2"
+    else
+        dir=$(_docker_compose_get_dir_from_var "$1" "$2")
+    fi
+
+    docker compose cp .vscode "$1":"${dir}/"
+}
+
+# Autocomplete for copy_vscode
+complete -F _get_docker_compose_services docker_compose_copy_vscode
+
 # Copy Oh My Bash config into container
 docker_compose_copy_omb() {
     local home
