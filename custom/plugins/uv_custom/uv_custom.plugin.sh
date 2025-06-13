@@ -16,5 +16,4 @@ alias uvs='command uv sync'
 alias uvb='command uv build'
 alias uvp='command uv pip'
 
-# . "$HOME/.local/bin/env"
 eval "$(uv generate-shell-completion bash)"
