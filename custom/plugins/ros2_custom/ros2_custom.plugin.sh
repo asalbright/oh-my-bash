@@ -1,5 +1,5 @@
 ## Attempt to source a ros2 distro setup.bash
-ROS_DISTROS_DIR=/opt/ros
+ROS_DISTROS_DIR=/opt/ros/
 INSTALLED_DISTROS=("rolling" "jazzy" "humble") # newest to oldest
 
 # Check if any of the distros are installed
