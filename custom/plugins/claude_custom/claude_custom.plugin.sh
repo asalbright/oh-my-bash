@@ -22,7 +22,7 @@ cmux() {
         tmux attach-session -t "$session"
     else
         tmux new-session -d -s "$session" && \
-        tmux send-keys -t "$session" "claude" Enter && \
+        tmux send-keys -t "$session" "claude --name \"$session\"" Enter && \
         tmux attach-session -t "$session"
     fi
 }
@@ -102,7 +102,7 @@ cmuxw() {
     fi
     tmux new-session -d -s "$session" && \
     tmux split-window -t "$session" -v -p 40 && \
-    tmux send-keys -t "$session:0.1" "claude" Enter && \
+    tmux send-keys -t "$session:0.1" "claude --name \"$session\"" Enter && \
     tmux select-pane -t "$session:0.0" && \
     tmux attach-session -t "$session"
 }
