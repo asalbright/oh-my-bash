@@ -112,12 +112,13 @@ aliases=(
 plugins=(
 git 
 bashmarks 
+tmux
 chown_custom 
 docker_custom
 run_docker_custom
-ros_custom
-ros2_custom
 uv_custom
+sim_custom
+claude_custom
 )
 
 # Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
@@ -156,3 +157,51 @@ source "$OSH"/oh-my-bash.sh
 # Example aliases
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
+
+# Auto load bash aliases
+if [ -f ./.bash_aliases ]; then
+    . ./.bash_aliases
+fi
+
+# Auto-source .bash_aliases when changing directories
+_last_dir=""
+_source_dir_aliases() {
+    if [ "$PWD" != "$_last_dir" ]; then
+        _last_dir="$PWD"
+        if [ -f ".bash_aliases" ]; then
+            source ".bash_aliases"
+        fi
+    fi
+}
+PROMPT_COMMAND="_source_dir_aliases${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+alias cddl="cd ~/isaaclab_manager/resources/IsaacLab/source/design_lab"
+alias cdkin="cd ~/Documents/Bitbucket/humanoid_kinematics"
+
+alias cddocs="cd ~/Documents"
+alias cdbit="cd ~/Documents/Bitbucket"
+alias cdgit="cd ~/Documents/Github"
+
+# VNC Server stuff. This should auto run, but just in case
+alias vncserver="/opt/TurboVNC/bin/vncserver"
+
+# Host UID and GID
+export HOST_UID=1000
+export HOST_GID=1000
+
+# VGL Stuff
+export VGL_DISPLAY=egl
+export VGL_CLIENT=10.10.5.114
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
+if [ -d /home/linuxbrew/.linuxbrew/etc/bash_completion.d ]; then
+  for f in /home/linuxbrew/.linuxbrew/etc/bash_completion.d/*; do
+    . "$f"
+  done
+fi
+
+# SSH Agent
+if [ -z "$SSH_AUTH_SOCK" ]; then                                                                                                     
+    eval "$(ssh-agent -s)" >/dev/null                                                                                                
+    ssh-add ~/.ssh/bitbucket 2>/dev/null                                                                                               
+  fi
