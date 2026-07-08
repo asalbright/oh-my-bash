@@ -18,5 +18,5 @@ alias cdisaac="cd /workspace/IsaacLab"
 alias cddesignlab="cd /workspace/IsaacLab/source/design_lab"
 
 ## MuJoCo
-alias mujoco="python -m mujoco.viewer"
-alias mujoco-model="python -m mujoco.viewer --mjcf"
+alias mujoco="/home/apptronik/Documents/Bitbucket/gmr/.venv/bin/python -m mujoco.viewer"
+alias mujoco-model="/home/apptronik/Documents/Bitbucket/gmr/.venv/bin/python -m mujoco.viewer --mjcf"
